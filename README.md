@@ -1,6 +1,6 @@
 # OINP Scraping and notify agent
 
-Python scraper that get's the latest update on the "Ontario Immigrant Nominee Program Updates" page.
+JS scraper that get's the latest update on the "Ontario Immigrant Nominee Program Updates" page.
 
 OINP 2020 Updates page: https://www.ontario.ca/page/2020-ontario-immigrant-nominee-program-updates
 
