@@ -1,0 +1,23 @@
+{
+  "name": "oinp-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for the OINP Updates page",
+  "main": "index.js",
+  "dependencies": {
+    "puppeteer": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+	"start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "scraper",
+    "js",
+    "oinp",
+    "canada",
+    "ontario"
+  ],
+  "author": "Tulio F.",
+  "license": "MIT"
+}
