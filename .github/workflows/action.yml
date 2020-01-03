@@ -1,7 +1,7 @@
 name: "Github actions OINP notification bot"
 
 on:
-    scheule:
+    schedule:
         - cron: '0 */6 * * *'
     
     jobs:
