@@ -1,0 +1,22 @@
+name: "Github actions OINP notification bot"
+
+on:
+    scheule:
+        - cron: '0 */6 * * *'
+    
+    jobs:
+        bot:
+            runs-on: ubuntu-latest
+            steps:
+                - uses: actions/checkout@v1
+                - name: 'Install node'
+                  uses: actions/setup-node@v1
+                - name: 'Install NPM dependencies'
+                  run: npm install
+                - name: 'Run code'
+                  run: node index.js
+                  env:
+                    NEXMO_KEY: ${{ secrets.NEXMO_KEY }}
+                    NEXMO_SECRET: ${{ secrets.NEXMO_SECRET }}
+                    NEXMO_FROM: ${{ secrets.NEXMO_FROM }}
+                    NEXMO_TO: ${{ secrets.NEXMO_TO }}
