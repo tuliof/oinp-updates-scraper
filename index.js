@@ -11,13 +11,13 @@ if (process.env.NODE_ENV !== 'production') {
 
 async function main() {
 	console.log('Starting OINP Scraper.');
-	/*
+	
 	const page = {
 		sectionDate: 'January 2, 2020',
 		firstParagraph: 'The Ontario Immigrant Nominee Program has reached its increased 2019' 
 	};
 	return page;
-	*/
+	
 }
 
 async function getOINPsection() {
@@ -88,7 +88,17 @@ async function formatMessage(page) {
 	return message;
 }
 
+async function checkDate(sectionDate) {
+	sectionDate = 'Janauary 2, 2020';
+	const lastUpdate = new Date(sectionDate);
+	
+	if (lastUpdate.toDateString() === new Date().toDateString()) {
+		
+	}
+}
+
 main()
-	.then(getOINPsection)
-	.then(formatMessage)
-	.then(sendSMS);
+	.then(checkDate)
+	//.then(getOINPsection)
+	//.then(formatMessage)
+	//.then(sendSMS);
