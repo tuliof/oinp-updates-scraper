@@ -2,10 +2,22 @@ const pp = require('puppeteer');
 const request = require('request');
 
 const url = 'https://www.ontario.ca/page/2020-ontario-immigrant-nominee-program-updates';
+const short_url = 'https://bit.ly/37JQhW2';
 
 // Load .env file only when running locally
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
+}
+
+async function main() {
+	console.log('Starting OINP Scraper.');
+	/*
+	const page = {
+		sectionDate: 'January 2, 2020',
+		firstParagraph: 'The Ontario Immigrant Nominee Program has reached its increased 2019' 
+	};
+	return page;
+	*/
 }
 
 async function getOINPsection() {
@@ -43,7 +55,7 @@ async function getOINPsection() {
 		await browser.close();
 		return result;
 	} catch(err) {
-		console.log(err);
+		console.error(err);
 	}
 }
 
@@ -64,20 +76,19 @@ async function sendSMS(message) {
 async function formatMessage(page) {
 	console.log(page);
 	if (page.sectionDate == null) {
-		console.log('Could not find target element.');
+		console.error('Could not find target element.');
 		return;
 	}
-	/* To-Do:
-	- Shorten url
-	- Send SMS
-	- Send SMS to me in case of error
-	*/
-	console.log('Message length: ' + page.sectionDate.length + page.firstParagraph.length);
-	let preview = '\n\t' + page.sectionDate + '\n\t' + page.firstParagraph.slice(0, 160 - page.sectionDate.length);
-	console.log('\n#Preview: ' + preview);
-	return preview;
+
+	let message = `New update for OINP 2020!\n\nCheck the page ${short_url}\n\n@...\n\nReply 'bye' to stop`;
+	message = message.replace('@', page.firstParagraph.slice(0, 161 - message.length));
+
+	console.log(`Message length: ${message.length}`);
+	console.log(`\n#Preview: ${message}`);
+	return message;
 }
 
-getOINPsection()
+main()
+	.then(getOINPsection)
 	.then(formatMessage)
 	.then(sendSMS);
