@@ -1,8 +1,8 @@
-name: "Github actions OINP notification bot"
+name: "OINP notification test"
 
 on:
     schedule:
-        - cron: '0 */6 * * *'
+        - cron: '0 0 9-19 ? * MON,TUE,WED,THU,FRI *'
     
 jobs:
     bot:
