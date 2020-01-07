@@ -2,7 +2,7 @@ name: "OINP notification test"
 
 on:
     schedule:
-        - cron: '0 0 9-19 ? * MON,TUE,WED,THU,FRI *'
+        - cron: '0 9-19 * * 1-5'
     
 jobs:
     bot:
