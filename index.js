@@ -1,5 +1,6 @@
 const pp = require('puppeteer');
 const request = require('request');
+const moment = require('moment');
 
 const url = 'https://www.ontario.ca/page/2020-ontario-immigrant-nominee-program-updates';
 const short_url = 'https://bit.ly/37JQhW2';
@@ -31,8 +32,7 @@ async function getOINPsection() {
 	});
 
 	const page = await browser.newPage();
-	
-    await page.setDefaultNavigationTimeout(0);
+	await page.setDefaultNavigationTimeout(0);
 	
 	console.log('Fetching...');
 	const response = await page.goto(url);
@@ -46,8 +46,8 @@ async function getOINPsection() {
 		let sectionMonth = section.innerText;
 		let sectionDate = section.nextElementSibling.innerText;
 		let firstParagraph = section.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
-		
-		return { sectionMonth, sectionDate, firstParagraph };
+		let updatedTime = document.querySelector('.angular-metatag[property="og:updated_time"]').getAttribute('content');
+		return { updatedTime, sectionMonth, sectionDate, firstParagraph };
 	});
 
 	await browser.close();
@@ -58,14 +58,21 @@ async function sendSMS(message) {
 	let credentials = { 
 		api_key: process.env.NEXMO_KEY,
 		api_secret: process.env.NEXMO_SECRET,
-		to: process.env.NEXMO_TO,
+		to: '',
 		from: process.env.NEXMO_FROM,
 		text: message
 	};
-	request.post('https://rest.nexmo.com/sms/json', { json: credentials }, (err, res, body) => {
-		if (err) { return console.log(err) }
-		const msg = body.messages[0];
-		console.log(`Status: ${msg.status}\nRemaining: ${msg['remaining-balance'].slice(0, 4)}`);
+
+	// To-Do: Retrieve numbers from DB
+	const phones = process.env.NEXMO_TO.split(',');
+
+	phones.forEach(number => {
+		credentials.to = number;
+		request.post('https://rest.nexmo.com/sms/json', { json: credentials }, (err, res, body) => {
+			if (err) { return console.log(err) }
+			const msg = body.messages[0];
+			console.log(`Status: ${msg.status}\nRemaining: ${msg['remaining-balance'].slice(0, 4)}`);
+		});
 	});
 }
 
@@ -85,11 +92,12 @@ async function formatMessage(page) {
 }
 
 async function checkDate(page) {
-	const lastUpdate = new Date(page.sectionDate).toDateString();
+	const lastUpdate = moment(page.updatedTime, 'YYYY-MM-DD HH');
+	lastUpdate.add(119, 'minutes');
 	
-	if (lastUpdate !== new Date().toDateString()) {
-		// If not a post made today, stop.
-		throw new Error("Latest post is older than today.");
+	if (new moment().isAfter(lastUpdate)) {
+		// If not a new post, stop.
+		throw new Error("Not a new post, stop!");
 	}
 
 	return page;
