@@ -6,6 +6,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
     "puppeteer": "^2.0.0",
     "request": "^2.88.0"
   },

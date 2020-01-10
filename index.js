@@ -1,6 +1,6 @@
 const pp = require('puppeteer');
 const request = require('request');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 const url = 'https://www.ontario.ca/page/2020-ontario-immigrant-nominee-program-updates';
 const short_url = 'https://bit.ly/37JQhW2';
@@ -95,9 +95,15 @@ async function checkDate(page) {
 	const lastUpdate = moment(page.updatedTime, 'YYYY-MM-DD HH');
 	lastUpdate.add(119, 'minutes');
 	
-	if (new moment().isAfter(lastUpdate)) {
+	// Server date is in UTC
+	const currentDate = moment().utc().tz('America/Toronto');
+
+	console.log(`Read: ${lastUpdate.format()}`);
+	console.log(`Expect: ${currentDate.format()}`);
+
+	if (currentDate.isAfter(lastUpdate)) {
 		// If not a new post, stop.
-		throw new Error("Not a new post, stop!");
+		throw new Error("No match, stop!");
 	}
 
 	return page;
