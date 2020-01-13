@@ -92,7 +92,9 @@ async function formatMessage(page) {
 }
 
 async function checkDate(page) {
-	const lastUpdate = moment(page.updatedTime, 'YYYY-MM-DD HH');
+	const lastUpdate = moment(page.updatedTime);
+	lastUpdate.minutes(0);
+	lastUpdate.seconds(0);
 	lastUpdate.add(119, 'minutes');
 	
 	// Server date is in UTC
