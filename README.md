@@ -7,10 +7,9 @@ OINP 2020 Updates page: https://www.ontario.ca/page/2020-ontario-immigrant-nomin
 ## Tasks
 
  - [x] Get data
- - [ ] Persist data
- - [ ] Send notification
+  - [x] Send notification
 
 ## Roadmap
 
-1. Basic scraping script that sends notification
-2. Site where people can register their email/phone number to receive notifications
+1. DONE - Basic scraping script that sends notification
+2. Not sure yet - Site where people can register their email/phone number to receive notifications
