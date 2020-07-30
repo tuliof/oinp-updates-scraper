@@ -1,6 +1,6 @@
 # OINP Scraping and notify agent
 
-![Deploy to AWS Lambda](https://github.com/tuliof/oinp-updates-scraper/workflows/Deploy%20to%20AWS%20Lambda/badge.svg?branch=develop)
+![Deploy to AWS Lambda](https://github.com/tuliof/oinp-updates-scraper/workflows/Deploy%20to%20AWS%20Lambda/badge.svg?branch=master)
 
 JS scraper that get's the latest update on the "Ontario Immigrant Nominee Program Updates" page, if a new update is found, it sends an SMS to notify.
 
