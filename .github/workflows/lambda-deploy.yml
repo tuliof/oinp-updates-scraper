@@ -10,6 +10,9 @@ jobs:
         uses: actions/checkout@v2.3.1
         with:
           ref: master
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.1
+      - run: npm install
       - name: Create zip
         uses: TheDoctor0/zip-release@0.4.1
         with:
@@ -26,6 +29,6 @@ jobs:
           s3_bucket: oinp.lambda
           zip_file: release.zip
           # Set to true to validate the request parameters and access permissions without modifying the function code.
-          dry_run: true # optional
+          #dry_run: true # optional
           # Show debug message after upload the lambda successfully.
           debug: true # optional
