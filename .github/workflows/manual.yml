@@ -1,0 +1,23 @@
+# This is a basic workflow that is manually triggered
+
+name: Deploy to AWS Lambda
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: AWS Lambda Deploy
+      # Deploy from MASTER only
+      if: github.ref == 'refs/heads/master'
+      uses: appleboy/lambda-action@v0.0.4
+      with:
+        aws_region: us-east-1
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # AWS lambda function name
+        function_name: scrap-oinp
+        zip_file: output.zip
+        # Set to true to validate the request parameters and access permissions without modifying the function code.
+        dry_run: true # optional
+        # Show debug message after upload the lambda successfully.
+        debug: true # optional
