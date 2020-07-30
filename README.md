@@ -7,22 +7,19 @@ OINP 2020 Updates page: https://www.ontario.ca/page/2020-ontario-immigrant-nomin
 ## How to run
 
 1. `npm install`
-2. `npm start`
+2. `cp .env_example .env`
+   1. Obs.: `.env_example` has development defaults. 
+3. `npm start`
 
 ## Tasks
 
  - [x] Scrap the OINP page
  - [x] Send notification
- - [ ] Add an example .env
- - [ ] Add a feature flag on .env to toggle sending SMS
+ - [x] Add an example .env
+ - [x] Add a feature flag on .env to toggle sending SMS
  - [ ] Modify script to run in AWS Lambda
- - [ ] Persist data
-   - [ ] Write/Read AWS S3
-   - [ ] Write to DB
+ - [ ] Read phone numbers from the DB
  - [ ] Scrap other provincial program sites
-
-
 
 ### References: 
  - https://aws.amazon.com/blogs/compute/running-executables-in-aws-lambda/
-

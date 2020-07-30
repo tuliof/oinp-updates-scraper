@@ -6,19 +6,15 @@ const url = 'https://www.ontario.ca/page/2020-ontario-immigrant-nominee-program-
 const short_url = 'https://bit.ly/37JQhW2';
 
 // Load .env file only when running locally
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+if (process.env.NODE_ENV === 'production') {
+	console.warn('Running PRODUCTION mode');
+} else {
+	console.warn('Running DEVELOP mode');
+	require('dotenv').config();
 }
 
 async function main() {
 	console.log('Starting OINP test.');
-	/*
-	const page = {
-		sectionDate: 'January 2, 2020',
-		firstParagraph: 'The Ontario Immigrant Nominee Program has reached its increased 2019' 
-	};
-	return page;
-	*/
 }
 
 async function getOINPsection() {
@@ -55,6 +51,11 @@ async function getOINPsection() {
 }
 
 async function sendSMS(message) {
+	if (process.env.FEATURE_SEND_SMS === 'false') {
+		console.warn('## Send SMS is turned OFF ##');
+		return 0;
+	}
+
 	let credentials = { 
 		api_key: process.env.NEXMO_KEY,
 		api_secret: process.env.NEXMO_SECRET,
@@ -87,15 +88,22 @@ async function formatMessage(page) {
 	message = message.replace('@', page.firstParagraph.slice(0, 161 - message.length));
 
 	console.log(`Message length: ${message.length}`);
-	console.log(`\n#Preview: ${message}`);
+	console.log(`\n#### SMS Preview ####\n ${message}\n#####################`);
 	return message;
 }
 
 async function checkDate(page) {
+	if (process.env.FEATURE_IGNORE_DATE_CHECK === 'true') {
+		return page;
+	}
+	
+	const minutesToRun = parseInt(process.env.RUN_EVERY_MINUTES);
+	const addMinutes = minutesToRun * 2 - 1;
+
 	const lastUpdate = moment(page.updatedTime);
 	lastUpdate.minutes(0);
 	lastUpdate.seconds(0);
-	lastUpdate.add(119, 'minutes');
+	lastUpdate.add(addMinutes, 'minutes');
 	
 	// Server date is in UTC
 	const currentDate = moment().utc().tz('America/Toronto');
