@@ -6,7 +6,8 @@ OINP 2020 Updates page: https://www.ontario.ca/page/2020-ontario-immigrant-nomin
 
 ## How to run
 
-
+1. `npm install`
+2. `npm start`
 
 ## Tasks
 
